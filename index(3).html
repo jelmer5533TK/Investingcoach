@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrarius Sapiens Growth Fund</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --navy: #0F1E35; --navy-mid: #1B2A4A; --navy-light: #243555;
+    --gold: #C9A84C; --gold-light: #E2C87A; --gold-pale: #F5EDD6;
+    --cream: #FAF8F4; --text: #1a1a1a; --muted: #6B6B6B;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: stretch; justify-content: space-between; padding: 0 60px; height: 72px; background: rgba(15,30,53,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,0.2); }
+  .nav-logo { display: flex; flex-direction: column; justify-content: center; gap: 3px; margin-right: 40px; flex-shrink: 0; }
+  .nav-logo-mark { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: #fff; letter-spacing: 0.04em; line-height: 1; }
+  .nav-logo-sub { font-size: 9px; font-weight: 300; color: var(--gold); letter-spacing: 0.22em; text-transform: uppercase; }
+  .nav-tabs { display: flex; align-items: stretch; flex: 1; overflow-x: auto; scrollbar-width: none; }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tabs .tab-btn { height: 100%; border-bottom: 2px solid transparent; padding: 0 20px; }
+  .nav-links { display: none; gap: 36px; list-style: none; }
+  .nav-links a { font-size: 12px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.65); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 24px; }
+  .nav-lang { display: flex; align-items: center; gap: 4px; }
+  .lang-btn { background: none; border: none; cursor: pointer; font-size: 18px; line-height: 1; padding: 4px; border-radius: 3px; opacity: 0.5; transition: opacity 0.2s; }
+  .lang-btn.active { opacity: 1; }
+  .lang-btn:hover { opacity: 0.85; }
+  .nav-cta { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); background: var(--gold); border: none; padding: 10px 24px; cursor: pointer; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--gold-light); }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+  .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: rgba(255,255,255,0.75); transition: all 0.25s; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .nav-mobile-dropdown { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(15,30,53,0.98); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,0.2); z-index: 99; padding: 16px 0 24px; flex-direction: column; }
+  .nav-mobile-dropdown.open { display: flex; }
+  .nav-mobile-dropdown a { font-size: 13px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.65); text-decoration: none; padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color 0.2s; }
+  .nav-mobile-dropdown a:last-child { border-bottom: none; color: var(--navy); background: var(--gold); margin: 16px 24px 0; text-align: center; font-weight: 500; padding: 14px 24px; }
+  .nav-mobile-dropdown a:hover { color: var(--gold); }
+  .nav-mobile-dropdown a:last-child:hover { color: var(--navy); background: var(--gold-light); }
+
+  .hero { min-height: 100vh; background: var(--navy); display: flex; flex-direction: column; justify-content: flex-end; padding: 72px 60px 80px; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .hero-bg svg { position: absolute; right: -60px; top: 50%; transform: translateY(-50%); opacity: 0.05; width: 680px; height: 680px; }
+  .hero-eyebrow { font-size: 11px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(50px, 6.5vw, 84px); font-weight: 300; line-height: 1.0; color: #fff; max-width: 800px; opacity: 0; animation: fadeUp 0.9s 0.4s forwards; }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-divider { width: 60px; height: 1px; background: var(--gold); margin: 36px 0; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
+  .hero-sub { font-size: 15px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.5); max-width: 500px; opacity: 0; animation: fadeUp 0.8s 0.7s forwards; }
+  .hero-pills { display: flex; gap: 12px; margin-top: 48px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s 0.9s forwards; }
+  .hero-pill { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.12); padding: 8px 18px; }
+  .hero-pill-gold { color: var(--gold); border-color: rgba(201,168,76,0.35); }
+  .hero-scroll { position: absolute; right: 60px; bottom: 80px; display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; animation: fadeUp 0.8s 1.1s forwards; }
+  .hero-scroll-text { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.25); writing-mode: vertical-rl; }
+  .hero-scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); }
+
+  .quote-strip { background: var(--gold); padding: 28px 60px; display: flex; align-items: center; justify-content: space-between; }
+  .quote-strip-text { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; font-style: italic; color: var(--navy); }
+  .quote-strip-detail { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--navy-mid); opacity: 0.65; }
+
+  section { padding: 100px 60px; }
+  .section-eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 4vw, 52px); font-weight: 300; line-height: 1.15; color: var(--navy); margin-bottom: 24px; }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-title-light { color: #fff; }
+
+  .philosophy { background: var(--cream); }
+  .philosophy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 60px; }
+  .phil-card { background: #fff; padding: 44px 40px; border-top: 3px solid var(--navy); transition: border-color 0.3s; }
+  .phil-card:hover { border-color: var(--gold); }
+  .phil-card-num { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 300; color: var(--gold-pale); line-height: 1; margin-bottom: 16px; }
+  .phil-card-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--navy); margin-bottom: 14px; }
+  .phil-card-body { font-size: 14px; font-weight: 300; line-height: 1.85; color: var(--muted); }
+  .phil-card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .phil-tag { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 5px 12px; }
+
+  .edge { background: var(--navy); }
+  .edge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 60px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.07); }
+  .edge-card { padding: 40px 32px; background: var(--navy); border-bottom: 2px solid transparent; transition: border-color 0.3s; }
+  .edge-card:hover { border-color: var(--gold); }
+  .edge-icon { margin-bottom: 20px; }
+  .edge-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: #fff; margin-bottom: 10px; }
+  .edge-body { font-size: 13px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.42); }
+
+  .ai-section { background: #fff; }
+  .ai-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .ai-body { font-size: 15px; font-weight: 300; line-height: 1.85; color: var(--muted); margin-bottom: 20px; }
+  .ai-callout { border-left: 3px solid var(--gold); padding: 20px 24px; background: var(--gold-pale); margin-top: 32px; }
+  .ai-callout-text { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: var(--navy); line-height: 1.4; }
+  .ai-visual { background: var(--navy); padding: 48px 40px; }
+  .ai-vis-title { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; }
+  .ai-flow { display: flex; flex-direction: column; }
+  .ai-flow-step { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .ai-flow-step:last-child { border-bottom: none; }
+  .ai-flow-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--gold); line-height: 1; min-width: 28px; }
+  .ai-flow-label { font-size: 13px; font-weight: 400; color: #fff; margin-bottom: 4px; }
+  .ai-flow-sub { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.38); line-height: 1.6; }
+
+  .incentives { background: var(--navy-mid); }
+  .incentives-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .incentives-body { font-size: 15px; font-weight: 300; line-height: 1.85; color: rgba(255,255,255,0.55); margin-bottom: 20px; }
+  .incentives-cards { display: flex; flex-direction: column; gap: 2px; margin-top: 16px; }
+  .inc-card { background: rgba(255,255,255,0.04); border-left: 3px solid var(--gold); padding: 24px 28px; }
+  .inc-card-title { font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .inc-card-body { font-size: 13px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.45); }
+  .incentives-callout { background: var(--gold); padding: 40px 36px; }
+  .incentives-callout-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--navy); opacity: 0.6; margin-bottom: 16px; }
+  .incentives-callout-quote { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; font-style: italic; color: var(--navy); line-height: 1.35; margin-bottom: 20px; }
+  .incentives-callout-body { font-size: 13px; font-weight: 400; line-height: 1.8; color: var(--navy-mid); }
+  .incentives-callout-body strong { font-weight: 500; }
+
+  .terms { background: var(--cream); }
+  .terms-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .terms-table { margin-top: 36px; }
+  .terms-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(201,168,76,0.15); gap: 20px; align-items: baseline; }
+  .terms-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+  .terms-value { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; color: var(--navy); text-align: right; }
+  .terms-cta { padding-top: 16px; }
+  .terms-cta-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; line-height: 1.15; color: var(--navy); margin-bottom: 20px; }
+  .terms-cta-title em { font-style: italic; color: var(--gold); }
+  .terms-cta-body { font-size: 14px; font-weight: 300; line-height: 1.8; color: var(--muted); margin-bottom: 32px; }
+  .btn-primary { display: inline-block; background: var(--navy); color: #fff; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 16px 36px; border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-light); }
+  .btn-outline { display: inline-block; background: transparent; color: var(--navy); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 15px 36px; border: 1px solid var(--navy); cursor: pointer; text-decoration: none; margin-left: 12px; transition: all 0.2s; }
+  .btn-outline:hover { background: var(--navy); color: #fff; }
+
+  .team { background: var(--navy); }
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+  .team-card { background: var(--navy-mid); padding: 44px 36px; border-top: 2px solid rgba(255,255,255,0.06); transition: border-color 0.3s; display: flex; flex-direction: column; }
+  .team-card:hover { border-color: var(--gold); }
+  .team-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--navy-light); border: 2px solid rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); font-weight: 400; flex-shrink: 0; }
+  .team-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: #fff; margin-bottom: 4px; }
+  .team-role { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .team-bio { font-size: 13px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+  .team-bullets { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+  .team-bullet { font-size: 12px; font-weight: 300; line-height: 1.6; color: rgba(255,255,255,0.32); padding-left: 14px; position: relative; }
+  .team-bullet::before { content: '—'; position: absolute; left: 0; color: var(--gold); font-size: 11px; }
+  .team-linkedin { display: inline-block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; margin-bottom: 16px; opacity: 0.7; transition: opacity 0.2s; }
+  .team-linkedin:hover { opacity: 1; }
+
+  footer { background: var(--navy); padding: 60px 60px 40px; border-top: 1px solid rgba(201,168,76,0.2); }
+  .footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: #fff; }
+  .footer-logo span { color: var(--gold); }
+  .footer-links { display: flex; gap: 32px; list-style: none; }
+  .footer-links a { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.38); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; gap: 40px; }
+  .footer-disclaimer { font-size: 11px; color: rgba(255,255,255,0.22); line-height: 1.7; max-width: 600px; }
+  .footer-reg { font-size: 11px; color: rgba(255,255,255,0.35); text-align: right; line-height: 1.7; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* TRACK RECORD */
+  .trackrecord { background: var(--navy); }
+  .tr-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 60px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); }
+  .tr-stat { padding: 36px 28px; background: var(--navy); border-bottom: 2px solid transparent; transition: border-color 0.3s; }
+  .tr-stat:hover { border-color: var(--gold); }
+  .tr-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 8px; }
+  .tr-stat-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.38); margin-bottom: 6px; }
+  .tr-stat-note { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.25); }
+  .tr-chart-wrap { margin-top: 60px; background: var(--navy-mid); border: 1px solid rgba(255,255,255,0.07); padding: 40px; }
+  .tr-chart-title { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; }
+  .tr-annual { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 40px; }
+  .tr-year-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .tr-bar-wrap { height: 140px; display: flex; align-items: flex-end; justify-content: center; width: 100%; }
+  .tr-bar { width: 100%; max-width: 52px; border-radius: 2px 2px 0 0; transition: opacity 0.2s; min-height: 4px; }
+  .tr-bar-pos { background: linear-gradient(to top, var(--gold), var(--gold-light)); }
+  .tr-bar-neg { background: rgba(200,80,80,0.7); border-radius: 0 0 2px 2px; align-self: flex-start; }
+  .tr-year-label { font-size: 10px; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); }
+  .tr-year-ret { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: #fff; }
+  .tr-year-ret.neg { color: rgba(220,100,100,0.9); }
+  .tr-disclaimer { font-size: 11px; color: rgba(255,255,255,0.2); line-height: 1.7; margin-top: 24px; font-weight: 300; }
+  .tr-equity-chart { width: 100%; height: 260px; position: relative; margin-top: 8px; }
+
+  /* CASE STUDIES */
+  .casestudies { background: var(--cream); }
+  .cs-tabs { display: flex; gap: 2px; margin-top: 48px; margin-bottom: 0; }
+  .cs-tab { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 12px 28px; background: rgba(0,0,0,0.05); color: var(--muted); cursor: pointer; border: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif; border-bottom: 2px solid transparent; }
+  .cs-tab.active { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+  .cs-panel { display: none; background: #fff; border: 1px solid rgba(0,0,0,0.06); }
+  .cs-panel.active { display: grid; grid-template-columns: 1fr 1fr; }
+  .cs-left { padding: 52px 48px; border-right: 1px solid rgba(0,0,0,0.06); }
+  .cs-right { padding: 52px 40px; background: var(--navy); }
+  .cs-tag { display: inline-block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.4); padding: 5px 14px; margin-bottom: 20px; }
+  .cs-name { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--navy); line-height: 1.05; margin-bottom: 8px; }
+  .cs-ticker { font-size: 11px; letter-spacing: 0.16em; color: var(--muted); margin-bottom: 24px; }
+  .cs-desc { font-size: 14px; font-weight: 300; line-height: 1.85; color: var(--muted); margin-bottom: 28px; }
+  .cs-thesis-title { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--navy); margin-bottom: 12px; font-weight: 500; }
+  .cs-bullets { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .cs-bullet { font-size: 13px; font-weight: 300; line-height: 1.65; color: var(--text); padding-left: 16px; position: relative; }
+  .cs-bullet::before { content: '·'; position: absolute; left: 0; color: var(--gold); }
+  .cs-result { display: flex; gap: 24px; padding-top: 24px; border-top: 1px solid rgba(201,168,76,0.2); }
+  .cs-result-item { text-align: left; }
+  .cs-result-val { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--navy); }
+  .cs-result-val.pos { color: #2a7a4b; }
+  .cs-result-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+  .cs-chart-title { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+  .cs-chart-svg { width: 100%; overflow: visible; }
+  .cs-chart-note { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 16px; line-height: 1.6; font-weight: 300; }
+
+  /* PORTFOLIO — Company Cards */
+  .portfolio { background: var(--cream); }
+  .port-intro { font-size: 15px; font-weight: 300; line-height: 1.85; color: var(--muted); max-width: 600px; margin-bottom: 60px; }
+  .company-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+  .company-card { background: #fff; padding: 36px 28px 28px; border-top: 3px solid transparent; transition: border-color 0.25s, box-shadow 0.25s; cursor: default; }
+  .company-card:hover { border-color: var(--gold); box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+  .cc-logo-wrap { height: 44px; display: flex; align-items: center; margin-bottom: 18px; }
+  .cc-logo-wrap img { max-height: 36px; max-width: 110px; object-fit: contain; filter: grayscale(1) opacity(0.75); transition: filter 0.2s; }
+  .company-card:hover .cc-logo-wrap img { filter: grayscale(0) opacity(1); }
+  .cc-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--navy); margin-bottom: 3px; }
+  .cc-ticker { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .cc-type { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid rgba(201,168,76,0.15); }
+  .cc-chart-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .cc-chart { width: 100%; height: 72px; }
+  .cc-cagr { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--navy); margin-top: 12px; }
+  .cc-cagr span { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-family: 'DM Sans', sans-serif; margin-left: 4px; vertical-align: middle; }
+  /* Strategy pillars */
+  .port-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 0; }
+  .port-card { background: #fff; padding: 36px 32px; border-top: 3px solid var(--navy); transition: border-color 0.3s; }
+  .port-card:hover { border-color: var(--gold); }
+  .port-card-icon { width: 40px; height: 40px; margin-bottom: 20px; }
+  .port-card-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--navy); margin-bottom: 10px; }
+  .port-card-body { font-size: 14px; font-weight: 300; line-height: 1.85; color: var(--muted); }
+  /* Holdings bar */
+  .port-current { margin-top: 60px; background: var(--navy); padding: 52px; }
+  .port-current-title { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; }
+  .port-holdings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.06); }
+  .port-holding { background: var(--navy); padding: 24px 20px; }
+  .port-holding-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: #fff; margin-bottom: 4px; }
+  .port-holding-ticker { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .port-holding-type { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+  .port-holding-pnl { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: rgba(100,200,130,0.9); margin-top: 8px; }
+
+  /* ═══════════════════ RESPONSIVE ═══════════════════ */
+
+  /* Classes for inline grids */
+  .cs-side-by-side { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 48px; }
+  .tr-risk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; height: 60px; min-height: 60px; }
+    .nav-tabs { display: none !important; }
+    .nav-links { display: none !important; }
+    .nav-cta { display: none !important; }
+    .nav-lang { display: none !important; }
+    .nav-right { gap: 0; margin-left: 0; }
+    .nav-hamburger { display: flex !important; }
+    .nav-mobile-dropdown { top: 60px; }
+    body { padding-top: 60px; }
+    section { padding: 64px 24px; }
+    .hero-scroll { display: none; }
+    .quote-strip { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    .quote-strip-text { font-size: 17px; }
+    .philosophy-grid { grid-template-columns: 1fr; }
+    .scurve-two-col { grid-template-columns: 1fr !important; }
+    .edge-grid { grid-template-columns: repeat(2, 1fr); }
+    .inspirations-grid { grid-template-columns: 1fr !important; }
+    .incentives-inner { grid-template-columns: 1fr; gap: 40px; }
+    .terms-inner { grid-template-columns: 1fr; gap: 40px; }
+    .team-grid { grid-template-columns: 1fr; }
+    footer { padding: 48px 24px 32px; }
+    .footer-top { flex-direction: column; gap: 32px; }
+    .footer-links { flex-wrap: wrap; gap: 16px; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-reg { text-align: center; }
+    .tr-stats { grid-template-columns: repeat(2, 1fr); }
+    .tr-chart-wrap { padding: 24px 16px; }
+    .tr-bar-wrap { height: 80px; }
+    .tr-year-ret { font-size: 11px; }
+    .tr-year-label { font-size: 8px; }
+    .cs-side-by-side { grid-template-columns: 1fr; }
+    .tr-risk-grid { grid-template-columns: repeat(2, 1fr); }
+    .company-grid { grid-template-columns: repeat(2, 1fr); }
+    .port-grid { grid-template-columns: 1fr; }
+    .cs-left, .cs-right { padding: 36px 28px; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 16px; height: 64px; }
+    .nav-logo-sub { display: none; }
+    .nav-cta { display: none; }
+    section { padding: 48px 16px; }
+    .hero { padding: 80px 16px 48px; }
+    .hero-title { font-size: clamp(34px, 9vw, 50px); }
+    .hero-pills { gap: 8px; }
+    .hero-pill { font-size: 10px; padding: 6px 12px; }
+    .quote-strip { padding: 16px; }
+    .quote-strip-text { font-size: 15px; }
+    .quote-strip-detail { display: none; }
+    .edge-grid { grid-template-columns: 1fr; }
+    .tr-stats { grid-template-columns: 1fr; }
+    .tr-bar-wrap { height: 60px; }
+    .tr-year-ret { font-size: 10px; }
+    .tr-year-label { font-size: 7px; }
+    .tr-risk-grid { grid-template-columns: 1fr 1fr; }
+    .company-grid { grid-template-columns: 1fr; }
+    .cs-left, .cs-right { padding: 28px 16px; }
+    footer { padding: 40px 16px 28px; }
+    .footer-links { gap: 12px; }
+    .btn-outline { margin-left: 0; margin-top: 12px; display: block; text-align: center; }
+  }
+
+/* ── TAB SYSTEM ─────────────────────────────────────── */
+.tab-bar { display: none; }
+.tab-btn { flex-shrink: 0; padding: 0 20px; height: 44px; font-size: 11px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
+.tab-btn:hover { color: rgba(255,255,255,0.75); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+body { padding-top: 72px; }
+</style>
+
+
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark">Contrarius Sapiens</div>
+    <div class="nav-logo-sub">Growth Fund</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('overzicht')" data-tab="overzicht" data-nl="Overzicht" data-en="Overview">Overzicht</button>
+    <button class="tab-btn" onclick="showTab('strategie')" data-tab="strategie" data-nl="Strategie" data-en="Strategy">Strategie</button>
+    <button class="tab-btn" onclick="showTab('team')" data-tab="team" data-nl="Team" data-en="Team">Team</button>
+    <button class="tab-btn" onclick="showTab('resultaten')" data-tab="resultaten" data-nl="Resultaten" data-en="Results">Resultaten</button>
+    <button class="tab-btn" onclick="showTab('investeren')" data-tab="investeren" data-nl="Investeren" data-en="Invest">Investeren</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-lang">
+      <button class="lang-btn active" id="lang-nl" onclick="setLang('nl')" title="Nederlands">🇳🇱</button>
+      <button class="lang-btn" id="lang-en" onclick="setLang('en')" title="English">🇬🇧</button>
+    </div>
+    <a href="CS_Investment_Philosophy_Fund_Overview.pdf" download="CS_Investment_Philosophy_Fund_Overview.pdf" class="nav-cta" style="text-decoration:none;display:inline-block;" data-nl="Download Fondsoverzicht" data-en="Download Fund Overview">Download Fondsoverzicht</a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu openen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="nav-mobile-dropdown" id="navMobileDropdown">
+  <a href="#" onclick="showTab('overzicht');return false;" data-nl="Overzicht" data-en="Overview">Overzicht</a>
+  <a href="#" onclick="showTab('strategie');return false;" data-nl="Strategie" data-en="Strategy">Strategie</a>
+  <a href="#" onclick="showTab('team');return false;" data-nl="Team" data-en="Team">Team</a>
+  <a href="#" onclick="showTab('resultaten');return false;" data-nl="Resultaten" data-en="Results">Resultaten</a>
+  <a href="#" onclick="showTab('investeren');return false;" data-nl="Investeren" data-en="Invest">Investeren</a>
+  <a href="CS_Investment_Philosophy_Fund_Overview.pdf" download="CS_Investment_Philosophy_Fund_Overview.pdf" data-nl="Download Fondsoverzicht" data-en="Download Fund Overview">Download Fondsoverzicht</a>
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" onclick="showTab('overzicht')" data-tab="overzicht" data-nl="Overzicht" data-en="Overview">Overzicht</button>
+  <button class="tab-btn" onclick="showTab('strategie')" data-tab="strategie" data-nl="Strategie" data-en="Strategy">Strategie</button>
+  <button class="tab-btn" onclick="showTab('team')" data-tab="team" data-nl="Team" data-en="Team">Team</button>
+  <button class="tab-btn" onclick="showTab('resultaten')" data-tab="resultaten" data-nl="Resultaten" data-en="Results">Resultaten</button>
+  <button class="tab-btn" onclick="showTab('investeren')" data-tab="investeren" data-nl="Investeren" data-en="Invest">Investeren</button>
+</div>
+
+<div class="tab-panel active" id="tab-overzicht">
+<section class="hero">
+  <div class="hero-bg">
+    <svg viewBox="0 0 680 680" fill="none"><circle cx="340" cy="340" r="310" stroke="white" stroke-width="1"/><circle cx="340" cy="340" r="230" stroke="white" stroke-width="1"/><circle cx="340" cy="340" r="150" stroke="white" stroke-width="1"/><circle cx="340" cy="340" r="70" stroke="white" stroke-width="1"/><line x1="30" y1="340" x2="650" y2="340" stroke="white" stroke-width="1"/><line x1="340" y1="30" x2="340" y2="650" stroke="white" stroke-width="1"/><line x1="121" y1="121" x2="559" y2="559" stroke="white" stroke-width="1"/><line x1="559" y1="121" x2="121" y2="559" stroke="white" stroke-width="1"/></svg>
+  </div>
+  <div class="hero-eyebrow" data-nl="Onafhankelijk denken · Lange termijn overtuiging · Beursgenoteerde aandelen" data-en="Independent thinking · Long-term conviction · Listed equities">Onafhankelijk denken &middot; Lange termijn overtuiging &middot; Beursgenoteerde aandelen</div>
+  <h1 class="hero-title" data-nl="Beleg via dit fonds in<br>de <em>innovatiefste bedrijven</em><br>wereldwijd" data-en="Invest in the world's<br><em>most innovative companies</em><br>through this fund">Beleg via dit fonds in<br>de <em>innovatiefste bedrijven</em><br>wereldwijd</h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub" data-nl="De markt vindt het moeilijk om groeibedrijven correct op waarde te schatten. Soms is de exponentiële groei van bedrijven moeilijk in te schatten, en soms zijn beleggers afgeleid door kwartaalresultaten waardoor ze de rode draad missen. Dit fonds probeert de markten te verslaan door zich gunstig te positioneren in seculaire groeitrends." data-en="Markets struggle to correctly value growth companies. Sometimes the exponential growth of businesses is hard to anticipate, and sometimes investors are distracted by quarterly results and miss the bigger picture. This fund aims to beat the market by positioning itself favourably in secular growth trends.">De markt vindt het moeilijk om groeibedrijven correct op waarde te schatten. Soms is de exponentiële groei van bedrijven moeilijk in te schatten, en soms zijn beleggers afgeleid door kwartaalresultaten waardoor ze de rode draad missen. Dit fonds probeert de markten te verslaan door zich gunstig te positioneren in seculaire groeitrends.</p>
+  <div class="hero-pills">
+    <div class="hero-pill hero-pill-gold">Long Only &middot; Geen hefboom</div>
+    <div class="hero-pill">AIFMD Light &middot; AFM Geregistreerd</div>
+    <div class="hero-pill">Wereldwijde aandelen &middot; Focus VS</div>
+    <div class="hero-pill">Min. &euro;100.000</div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-text">Scroll</div>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<div class="quote-strip">
+  <div class="quote-strip-text">&ldquo;Contrarius Sapiens, De Wijze Contrarian&rdquo;</div>
+  <div class="quote-strip-detail">Beheerd door AssetCare &middot; Geregistreerd bij AFM</div>
+</div>
+
+
+<section style="background:var(--cream);padding:80px 60px;">
+  <div style="max-width:680px;">
+    <div class="section-eyebrow" data-nl="Waarom Contrarius Sapiens" data-en="Why Contrarius Sapiens">Waarom Contrarius Sapiens</div>
+    <h2 class="section-title" data-nl="Wij beleggen niet in de markt.<br><em>Wij beleggen in een kleine groep bedrijven met unieke kenmerken.</em>" data-en="We don't invest in the market.<br><em>We invest in a small group of companies with unique characteristics.</em>">Wij beleggen niet in de markt.<br><em>Wij beleggen in een kleine groep bedrijven met unieke kenmerken.</em></h2>
+    <p style="font-size:15px;font-weight:300;line-height:1.9;color:var(--muted);margin-bottom:40px;" data-nl="De index volgen geeft indexrendementen. Wij kiezen bewust voor concentratie en overtuiging: een kleine selectie bedrijven die structureel groeien, in handen van mensen die er zelf in geloven, en die de markt om de verkeerde redenen heeft afgestraft." data-en="Following the index gives index returns. We deliberately choose concentration and conviction: a small selection of structurally growing companies, run by people who believe in them, and that the market has punished for the wrong reasons.">De index volgen geeft indexrendementen. Wij kiezen bewust voor concentratie en overtuiging: een kleine selectie bedrijven die structureel groeien, in handen van mensen die er zelf in geloven, en die de markt om de verkeerde redenen heeft afgestraft.</p>
+    <div style="margin-top:0;">
+      <button onclick="showTab('strategie')" style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--navy);background:var(--gold);border:none;padding:16px 36px;cursor:pointer;" data-nl="Onze strategie →" data-en="Our strategy →">Onze strategie &rarr;</button>
+      <button onclick="showTab('resultaten')" style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--navy);background:transparent;border:1px solid rgba(15,30,53,0.3);padding:15px 36px;cursor:pointer;margin-left:12px;" data-nl="Track record →" data-en="Track record →">Track record &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<!-- S-CURVE SECTION -->
+<section style="background:#fff;padding:80px 60px;">
+  <div style="max-width:760px;">
+    <div class="section-eyebrow" data-nl="Waar wij instappen" data-en="Where we invest">Waar wij instappen</div>
+    <h2 class="section-title" data-nl="Elk groeibedrijf heeft een S-curve.<br><em>De vraag is waar je instapt.</em>" data-en="Every growth company has an S-curve.<br><em>The question is where you enter.</em>">Elk groeibedrijf heeft een S-curve.<br><em>De vraag is waar je instapt.</em></h2>
+    <p style="font-size:15px;font-weight:300;line-height:1.85;color:var(--muted);margin-bottom:16px;" data-nl="VC-beleggers richten zich op het begin van die curve, waardebeleggers op het einde. Wij denken dat er in elk stadium van een groeibedrijf aantrekkelijke kansen zijn, maar dat je wel goed moet nadenken over de bijbehorende risico's." data-en="VC investors focus on the beginning of that curve, value investors on the end. We believe there are attractive opportunities at every stage of a growth company's lifecycle, but you need to think carefully about the associated risks.">VC-beleggers richten zich op het begin van die curve, waardebeleggers op het einde. Wij denken dat er in elk stadium van een groeibedrijf aantrekkelijke kansen zijn, maar dat je wel goed moet nadenken over de bijbehorende risico's.</p>
+    <p style="font-size:15px;font-weight:300;line-height:1.85;color:var(--muted);margin-bottom:40px;" data-nl="Wij beleggen vanaf de eerste jaren van zichtbare seculaire groei tot aan mature groei. Hieronder staat uitgelegd waarom." data-en="We invest from the first years of visible secular growth all the way through to mature growth. Below we explain why.">Wij beleggen vanaf de eerste jaren van zichtbare seculaire groei tot aan mature groei. Hieronder staat uitgelegd waarom.</p>
+  </div>
+
+  <!-- S-CURVE SVG -->
+  <div style="max-width:820px;margin-bottom:48px;">
+    <svg width="100%" viewBox="0 0 680 370" role="img" aria-label="Product adoptie S-curve met investeringszone" style="display:block;">
+      <defs>
+        <marker id="sc-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <clipPath id="sc-left"><rect x="55" y="0" width="168" height="370"/></clipPath>
+        <clipPath id="sc-mid"><rect x="223" y="0" width="272" height="370"/></clipPath>
+        <clipPath id="sc-right"><rect x="495" y="0" width="140" height="370"/></clipPath>
+      </defs>
+
+      <!-- Zone fills under curve -->
+      <path clip-path="url(#sc-left)"
+        d="M55,302 C90,301 130,300 168,298 C188,296 207,292 223,287 L223,310 L55,310 Z"
+        fill="#C9A84C" opacity="0.08"/>
+      <path clip-path="url(#sc-mid)"
+        d="M223,287 C245,280 268,265 295,240 C325,210 360,172 400,130 C432,98 462,82 495,72 L495,310 L223,310 Z"
+        fill="#C9A84C" opacity="0.15"/>
+      <path clip-path="url(#sc-right)"
+        d="M495,72 C520,68 548,66 580,65 L580,310 L495,310 Z"
+        fill="rgba(107,107,107,0.07)"/>
+
+      <!-- Axes -->
+      <line x1="55" y1="310" x2="610" y2="310" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+      <line x1="55" y1="60" x2="55" y2="310" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+      <text x="332" y="340" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#6B6B6B" letter-spacing="0.1em" text-transform="uppercase">MARKTPENETRATIE &amp; TIJD</text>
+
+      <!-- S-curve: flat start, steep middle, flat end -->
+      <path d="M55,302 C95,301 140,300 175,298 C200,296 215,291 235,282 C258,269 278,248 305,218 C335,183 368,148 405,120 C435,98 462,82 495,72 C520,67 548,65 600,64"
+        fill="none" stroke="var(--gold,#C9A84C)" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Dividers -->
+      <line x1="223" y1="60" x2="223" y2="310" stroke="rgba(201,168,76,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="495" y1="60" x2="495" y2="310" stroke="rgba(107,107,107,0.25)" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <!-- Zone header pills -->
+      <rect x="60" y="30" width="158" height="22" rx="3" fill="rgba(107,107,107,0.08)"/>
+      <text x="139" y="45" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#6B6B6B" letter-spacing="0.12em">TE VROEG</text>
+
+      <rect x="228" y="30" width="262" height="22" rx="3" fill="rgba(201,168,76,0.15)"/>
+      <text x="359" y="45" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#8B6A1A" letter-spacing="0.12em">ONZE INVESTERINGSZONE</text>
+
+      <rect x="500" y="30" width="110" height="22" rx="3" fill="rgba(107,107,107,0.08)"/>
+      <text x="555" y="45" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#6B6B6B" letter-spacing="0.12em">TE LAAT</text>
+
+      <!-- Phase labels -->
+      <text x="139" y="326" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#9B9B9B" letter-spacing="0.06em">Innovators</text>
+      <text x="280" y="326" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#6B6B6B" letter-spacing="0.06em">Vroege adoptie</text>
+      <text x="390" y="326" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#6B6B6B" letter-spacing="0.06em">Vroege meerderheid</text>
+      <text x="548" y="326" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#9B9B9B" letter-spacing="0.06em">Late meerderheid</text>
+
+      <!-- Entry marker -->
+      <circle cx="223" cy="287" r="5" fill="#C9A84C"/>
+      <rect x="100" y="260" width="112" height="20" rx="3" fill="#C9A84C" opacity="0.15"/>
+      <text x="156" y="274" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#8B6A1A" font-weight="500" letter-spacing="0.08em">2-4 JAAR OMZETGROEI</text>
+      <line x1="210" y1="275" x2="219" y2="283" stroke="#C9A84C" stroke-width="1.5" marker-end="url(#sc-arrow)"/>
+
+      <!-- Exit marker -->
+      <circle cx="495" cy="72" r="5" fill="#6B6B6B" opacity="0.5"/>
+      <rect x="420" y="52" width="66" height="20" rx="3" fill="rgba(107,107,107,0.1)"/>
+      <text x="453" y="66" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#6B6B6B" font-weight="500" letter-spacing="0.08em">EXIT: MATUUR</text>
+
+      <!-- Vroege groei label in zone -->
+      <text x="265" y="260" font-family="'Cormorant Garamond',serif" font-size="15" fill="#C9A84C" opacity="0.9" font-style="italic">Vroege Groei</text>
+      <!-- Gevestigde groei label -->
+      <text x="370" y="130" font-family="'Cormorant Garamond',serif" font-size="15" fill="#C9A84C" opacity="0.9" font-style="italic">Gevestigde Groei</text>
+    </svg>
+  </div>
+
+  <!-- Two-column explanation -->
+  <div class="scurve-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;max-width:820px;">
+    <div style="background:var(--cream);border-top:3px solid rgba(107,107,107,0.2);padding:36px 32px;">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;" data-nl="Waarom niet eerder?" data-en="Why not earlier?">Waarom niet eerder?</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--navy);margin-bottom:14px;line-height:1.3;" data-nl="Vóór omzetgroei is het<br>een geldverbrandingsmachine." data-en="Before revenue growth,<br>it's a money-burning machine.">Vóór omzetgroei is het<br>een geldverbrandingsmachine.</div>
+      <p style="font-size:14px;font-weight:300;line-height:1.85;color:var(--muted);" data-nl="In de allereerste fase van een bedrijf rust de beleggingsthesis volledig op toekomstige aannames zonder bewijs. Negentig procent van de vroegste posities mislukt, niet omdat de technologie faalt, maar omdat de markt, het tijdstip of de uitvoering niet klopt. Twee tot vier jaar aantoonbare omzetgroei filtert het merendeel van die zwakke investeringstheses eruit. Het is de simpelste, meest betrouwbare filter die wij kennen om de uitvalskans drastisch te verlagen." data-en="In the earliest stage of a company, the investment thesis rests entirely on future assumptions without proof. Ninety percent of the earliest positions fail, not because the technology fails, but because the market, timing or execution is off. Two to four years of proven revenue growth filters out most of those weak theses. It is the simplest, most reliable filter we know to drastically reduce the failure rate.">In de allereerste fase van een bedrijf rust de beleggingsthesis volledig op toekomstige aannames zonder bewijs. Negentig procent van de vroegste posities mislukt, niet omdat de technologie faalt, maar omdat de markt, het tijdstip of de uitvoering niet klopt. Twee tot vier jaar aantoonbare omzetgroei filtert het merendeel van die zwakke investeringstheses eruit. Het is de simpelste, meest betrouwbare filter die wij kennen om de uitvalskans drastisch te verlagen.</p>
+    </div>
+    <div style="background:var(--cream);border-top:3px solid rgba(107,107,107,0.2);padding:36px 32px;">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;" data-nl="Waarom niet later?" data-en="Why not later?">Waarom niet later?</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--navy);margin-bottom:14px;line-height:1.3;" data-nl="Volwassen bedrijven groeien mee met de inflatie, niet meer." data-en="Mature companies grow with inflation. Nothing more.">Volwassen bedrijven groeien mee met de inflatie, niet meer.</div>
+      <p style="font-size:14px;font-weight:300;line-height:1.85;color:var(--muted);" data-nl="Wanneer een bedrijf volledig volwassen is, wordt de koers bepaald door winstcontinuïteit en kapitaalteruggave via dividenden en buybacks, niet door groeiverwachtingen. Misprijzingen in deze categorie zijn minder frequent, minder extreem en minder goed te benutten met onze aanpak. Ons analytisch voordeel zit in het herkennen van groei die de markt onderwaardeert. Dat voordeel verdwijnt zodra een bedrijf stopt met structureel groeien." data-en="When a company is fully mature, the price is driven by earnings stability and capital returns via dividends and buybacks, not growth expectations. Mispricings in this category are less frequent, less extreme and harder to exploit. Our analytical edge lies in identifying growth the market undervalues. That edge disappears once a company stops growing structurally.">Wanneer een bedrijf volledig volwassen is, wordt de koers bepaald door winstcontinuïteit en kapitaalteruggave via dividenden en buybacks, niet door groeiverwachtingen. Misprijzingen in deze categorie zijn minder frequent, minder extreem en minder goed te benutten met onze aanpak. Ons analytisch voordeel zit in het herkennen van groei die de markt onderwaardeert. Dat voordeel verdwijnt zodra een bedrijf stopt met structureel groeien.</p>
+    </div>
+  </div>
+</section>
+
+
+
+</div>
+
+<div class="tab-panel" id="tab-strategie">
+
+<section class="philosophy" id="filosofie">
+  <div class="section-eyebrow">Beleggingsfilosofie</div>
+  <h2 class="section-title">Wij beleggen niet in de markt.<br><em>Wij beleggen in een kleine groep bedrijven met unieke kenmerken.</em></h2>
+  <p style="font-size:15px;font-weight:300;line-height:1.85;color:var(--muted);max-width:580px;" data-nl="De index volgen geeft indexrendementen. Wij kiezen bewust voor concentratie en overtuiging: een kleine selectie bedrijven die structureel groeien, in handen van mensen die er zelf in geloven, en die de markt om de verkeerde redenen heeft afgestraft." data-en="Following the index gives index returns. We deliberately choose concentration and conviction: a small selection of structurally growing companies, run by people who believe in them, and that the market has punished for the wrong reasons.">De index volgen geeft indexrendementen. Wij kiezen bewust voor concentratie en overtuiging: een kleine selectie bedrijven die structureel groeien, in handen van mensen die er zelf in geloven, en die de markt om de verkeerde redenen heeft afgestraft.</p>
+  <div class="philosophy-grid" id="strategie">
+    <div class="phil-card">
+      <div class="phil-card-title">Vroege Groei</div>
+      <p class="phil-card-body">Jonge bedrijven die al bewijzen dat hun product werkt, maar waarbij de markt zich nog fixeert op de investeringsfase in plaats van de kasstroomcapaciteit over vijf jaar. Dat gat tussen wat de markt ziet en wat wij zien, is waar wij opereren.</p>
+      <div class="phil-card-tags">
+        <div class="phil-tag">Hoge brutomarge</div><div class="phil-tag">Snelle omzetgroei</div><div class="phil-tag">Oprichter aan het roer</div><div class="phil-tag">Route naar winstgevendheid</div>
+      </div>
+    </div>
+    <div class="phil-card">
+      <div class="phil-card-title">Gevestigde Groei</div>
+      <p class="phil-card-body">Bedrijven die al bewezen hebben wat ze zijn, maar tijdelijk worden afgestraft door macro-angst, sectorroulatie of irrationeel sentiment. Geen turnarounds, geen hoop. Kwaliteit die de markt om de verkeerde redenen goedkoop maakt.</p>
+      <div class="phil-card-tags">
+        <div class="phil-tag">Duurzame moats</div><div class="phil-tag">Terugkerende inkomsten</div><div class="phil-tag">Tijdelijke tegenwind</div><div class="phil-tag">Onder intrinsieke waarde</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="edge">
+  <div class="section-eyebrow" style="color:var(--gold);" data-nl="Onze voorsprong" data-en="Our edge">Onze voorsprong</div>
+  <h2 class="section-title section-title-light" data-nl="Waarom wij anders denken<br><em>dan de rest van de markt</em>" data-en="Why we think differently<br><em>from the rest of the market</em>">Waarom wij anders denken<br><em>dan de rest van de markt</em></h2>
+  <div class="edge-grid">
+    <div class="edge-card">
+      <div class="edge-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="#C9A84C" stroke-width="1"/><path d="M8 22 L16 10 L24 22" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="16" cy="10" r="2" fill="#C9A84C"/></svg></div>
+      <div class="edge-title" data-nl="Puur bottom-up" data-en="Pure bottom-up">Puur bottom-up</div>
+      <p class="edge-body" data-nl="Geen sectorverplichtingen, geen benchmarkgewichten. Wij kopen bedrijven, geen categorieën. Elke positie staat op eigen merites." data-en="No sector obligations, no benchmark weights. We buy companies, not categories. Every position stands on its own merits.">Geen sectorverplichtingen, geen benchmarkgewichten. Wij kopen bedrijven, geen categorieën. Elke positie staat op eigen merites.</p>
+    </div>
+    <div class="edge-card">
+      <div class="edge-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="26" height="26" rx="2" stroke="#C9A84C" stroke-width="1"/><path d="M8 20 L13 13 L19 17 L24 9" stroke="#C9A84C" stroke-width="1.5" fill="none"/></svg></div>
+      <div class="edge-title" data-nl="Hoge overtuiging" data-en="High conviction">Hoge overtuiging</div>
+      <p class="edge-body" data-nl="Een kleine portefeuille van onze beste ideeën. Als een positie niet overtuigend genoeg is voor een significante allocatie, heeft die geen plek in het fonds." data-en="A small portfolio of our best ideas. If a position is not convincing enough for a significant allocation, it has no place in the fund.">Een kleine portefeuille van onze beste ideeën. Als een positie niet overtuigend genoeg is voor een significante allocatie, heeft die geen plek in het fonds.</p>
+    </div>
+    <div class="edge-card">
+      <div class="edge-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 3 L29 27 L3 27 Z" stroke="#C9A84C" stroke-width="1" fill="none"/><line x1="16" y1="14" x2="16" y2="21" stroke="#C9A84C" stroke-width="1.5"/><circle cx="16" cy="23" r="1.5" fill="#C9A84C"/></svg></div>
+      <div class="edge-title" data-nl="Contrair denken" data-en="Contrarian thinking">Contrair denken</div>
+      <p class="edge-body" data-nl="Wij zijn het meest geïnteresseerd als de consensus paniekeert. Volatiliteit is geen risico dat wij vermijden. Het is de omgeving waarin wij onze beste posities opbouwen." data-en="We are most interested when the consensus panics. Volatility is not a risk we avoid. It is the environment in which we build our best positions.">Wij zijn het meest geïnteresseerd als de consensus panikeert. Volatiliteit is geen risico dat wij vermijden. Het is de omgeving waarin wij onze beste posities opbouwen.</p>
+    </div>
+    <div class="edge-card">
+      <div class="edge-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="6" stroke="#C9A84C" stroke-width="1"/><circle cx="16" cy="16" r="13" stroke="#C9A84C" stroke-width="1" stroke-dasharray="3 3"/><line x1="16" y1="3" x2="16" y2="8" stroke="#C9A84C" stroke-width="1.5"/><line x1="16" y1="24" x2="16" y2="29" stroke="#C9A84C" stroke-width="1.5"/><line x1="3" y1="16" x2="8" y2="16" stroke="#C9A84C" stroke-width="1.5"/><line x1="24" y1="16" x2="29" y2="16" stroke="#C9A84C" stroke-width="1.5"/></svg></div>
+      <div class="edge-title" data-nl="Eigenaarsmindset" data-en="Owner's mindset">Eigenaarsmindset</div>
+      <p class="edge-body" data-nl="Wij behandelen elke belegging als deelgenoot in een echt bedrijf. Dat betekent denken in jaren, niet kwartalen, en de moed hebben om te wachten." data-en="We treat every investment as a co-owner of a real business. That means thinking in years, not quarters, and having the courage to wait.">Wij behandelen elke belegging als deelgenoot in een echt bedrijf. Dat betekent denken in jaren, niet kwartalen, en de moed hebben om te wachten.</p>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--cream);padding:100px 60px;">
+  <div class="section-eyebrow" data-nl="Intellectuele Grondslagen" data-en="Intellectual Foundations">Intellectuele Grondslagen</div>
+  <h2 class="section-title" data-nl="Gebouwd op de schouders<br>van <em>de besten.</em>" data-en="Built on the shoulders<br>of <em>the greatest.</em>">Gebouwd op de schouders<br>van <em>de besten.</em></h2>
+  <p style="font-size:15px;font-weight:300;line-height:1.85;color:var(--muted);max-width:600px;margin-bottom:72px;" data-nl="Onze strategie is geen toeval. Ze is gebouwd op de inzichten van de meest succesvolle beleggers en denkers van de afgelopen eeuw. Hieronder de vier pijlers waarop wij ons fundament hebben gelegd." data-en="Our strategy is no accident. It is built on the insights of the most successful investors and thinkers of the past century. Below are the four pillars on which we have laid our foundation.">Onze strategie is geen toeval. Ze is gebouwd op de inzichten van de meest succesvolle beleggers en denkers van de afgelopen eeuw. Hieronder de vier pijlers waarop wij ons fundament hebben gelegd.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px;">
+
+    <!-- Graham & Buffett -->
+    <div style="background:#fff;padding:52px 44px;border-top:3px solid var(--navy);">
+      <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;" data-nl="Pijler I · Waardediscipline" data-en="Pillar I · Value Discipline">Pijler I &middot; Waardediscipline</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:32px;padding-left:16px;border-left:2px solid rgba(201,168,76,0.3);">&ldquo;Het is beter om een geweldig bedrijf te kopen voor een redelijke prijs, dan een redelijk bedrijf voor een geweldige prijs.&rdquo;</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--navy);line-height:1.1;margin-bottom:6px;">Benjamin Graham<br>&amp; Warren Buffett</div>
+      <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:28px;">The Intelligent Investor &middot; Berkshire Hathaway</div>
+      <p style="font-size:13px;font-weight:300;line-height:1.85;color:var(--muted);" data-nl="Graham legde de basis: beleggen als het kopen van een bedrijf, niet een koersticker. Buffett verfijnde het: kwaliteit en concurrentievoordeel wegen zwaarder dan een lage prijs alleen. Van hen leerden wij dat marge van veiligheid, geduld en eigenaarsmindset geen stijlkeuze zijn, maar de kern van rationeel beleggen." data-en="Graham laid the foundation: investing as buying a business, not a ticker. Buffett refined it: quality and competitive advantage outweigh a low price alone. From them we learned that margin of safety, patience and an owner's mindset are not a style choice — they are the core of rational investing.">Graham legde de basis: beleggen als het kopen van een bedrijf, niet een koersticker. Buffett verfijnde het: kwaliteit en concurrentievoordeel wegen zwaarder dan een lage prijs alleen. Van hen leerden wij dat marge van veiligheid, geduld en eigenaarsmindset geen stijlkeuze zijn, maar de kern van rationeel beleggen.</p>
+    </div>
+
+    <!-- Peter Lynch -->
+    <div style="background:#fff;padding:52px 44px;border-top:3px solid var(--navy);border-left:2px solid rgba(0,0,0,0.04);">
+      <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;" data-nl="Pijler II · Stock Picking" data-en="Pillar II · Stock Picking">Pijler II &middot; Stock Picking</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:32px;padding-left:16px;border-left:2px solid rgba(201,168,76,0.3);">&ldquo;Ken wat je bezit, en weet waarom je het bezit. Als je dit niet in drie minuten kunt uitleggen aan een kind, bezit je het niet.&rdquo;</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--navy);line-height:1.1;margin-bottom:6px;">Peter Lynch</div>
+      <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:28px;">Fidelity Magellan &middot; One Up on Wall Street</div>
+      <p style="font-size:13px;font-weight:300;line-height:1.85;color:var(--muted);" data-nl="Lynch behaalde 29% gemiddeld jaarlijks rendement over 13 jaar door gewoon goed te kijken: naar producten, naar klanten, naar alledaagse groei. Hij bewees dat de beste beleggingen soms voor het oog verborgen zijn in sectoren die de markt negeert. Van hem leerden wij dat grondige kennis van een bedrijf een groter voordeel geeft dan welk model dan ook." data-en="Lynch achieved 29% average annual returns over 13 years simply by looking carefully: at products, at customers, at everyday growth. He proved that the best investments are sometimes hidden in sectors the market ignores. From him we learned that deep knowledge of a business gives a greater edge than any model.">Lynch behaalde 29% gemiddeld jaarlijks rendement over 13 jaar door gewoon goed te kijken: naar producten, naar klanten, naar alledaagse groei. Hij bewees dat de beste beleggingen soms voor het oog verborgen zijn in sectoren die de markt negeert. Van hem leerden wij dat grondige kennis van een bedrijf een groter voordeel geeft dan welk model dan ook.</p>
+    </div>
+
+    <!-- Peter Thiel -->
+    <div style="background:#fff;padding:52px 44px;border-top:2px solid rgba(0,0,0,0.06);border-right:2px solid rgba(0,0,0,0.04);">
+      <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;" data-nl="Pijler III · Disruptief Denken" data-en="Pillar III · Disruptive Thinking">Pijler III &middot; Disruptief Denken</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:32px;padding-left:16px;border-left:2px solid rgba(201,168,76,0.3);">&ldquo;Wat is er waar dat bijna niemand het met je eens is?&rdquo;</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--navy);line-height:1.1;margin-bottom:6px;">Peter Thiel</div>
+      <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:28px;">PayPal &middot; Palantir &middot; Zero to One</div>
+      <p style="font-size:13px;font-weight:300;line-height:1.85;color:var(--muted);" data-nl="Thiel denkt radicaal anders over bedrijven: de meest waardevolle zijn niet concurrerend, maar monopolistisch. Ze doen iets wat niemand anders doet, en bouwen van daaruit een verdedigbaar domein. Van hem leerden wij om te zoeken naar bedrijven met echte uniciteit, netwerkeeffecten en de ambitie om een markt opnieuw te definiëren, niet slechts te bedienen." data-en="Thiel thinks radically differently about companies: the most valuable are not competitive, but monopolistic. They do something no one else does and build a defensible domain from there. From him we learned to look for companies with genuine uniqueness, network effects and the ambition to redefine a market, not merely serve it.">Thiel denkt radicaal anders over bedrijven: de meest waardevolle zijn niet concurrerend, maar monopolistisch. Ze doen iets wat niemand anders doet, en bouwen van daaruit een verdedigbaar domein. Van hem leerden wij om te zoeken naar bedrijven met echte uniciteit, netwerkeeffecten en de ambitie om een markt opnieuw te definiëren, niet slechts te bedienen.</p>
+    </div>
+
+    <!-- Terry Smith -->
+    <div style="background:#fff;padding:52px 44px;border-top:2px solid rgba(0,0,0,0.06);border-left:2px solid rgba(0,0,0,0.04);">
+      <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;" data-nl="Pijler IV · Kwaliteitsgroei" data-en="Pillar IV · Quality Growth">Pijler IV &middot; Kwaliteitsgroei</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:32px;padding-left:16px;border-left:2px solid rgba(201,168,76,0.3);">&ldquo;Koop goede bedrijven. Betaal niet te veel. Doe niets.&rdquo;</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--navy);line-height:1.1;margin-bottom:6px;">Terry Smith</div>
+      <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:28px;">Fundsmith Equity Fund &middot; actief sinds 2010</div>
+      <p style="font-size:13px;font-weight:300;line-height:1.85;color:var(--muted);" data-nl="Smith bouwde Fundsmith uit tot een van de best presterende fondsen van zijn generatie met een verbluffend eenvoudige aanpak: koop alleen bedrijven met hoge rendementen op kapitaal, sterke concurrentievoordelen en bewezen groei, en houd ze vast. Zijn fonds draait nog steeds. Van hem leerden wij dat portefeuillediscipline, lage omloopsnelheid en onwrikbare focus op kwaliteit geen beperking zijn, maar een voordeel." data-en="Smith built Fundsmith into one of the best-performing funds of his generation with a strikingly simple approach: only buy companies with high returns on capital, strong competitive advantages and proven growth, and hold them. His fund is still running. From him we learned that portfolio discipline, low turnover and an unwavering focus on quality are not a constraint — they are an advantage.">Smith bouwde Fundsmith uit tot een van de best presterende fondsen van zijn generatie met een verbluffend eenvoudige aanpak: koop alleen bedrijven met hoge rendementen op kapitaal, sterke concurrentievoordelen en bewezen groei, en houd ze vast. Zijn fonds draait nog steeds. Van hem leerden wij dat portefeuillediscipline, lage omloopsnelheid en onwrikbare focus op kwaliteit geen beperking zijn, maar een voordeel.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="ai-section">
+  <div class="ai-inner">
+    <div>
+      <div class="section-eyebrow" data-nl="Eigen technologie" data-en="Proprietary technology">Eigen technologie</div>
+      <h2 class="section-title" data-nl="Het systeem doet het zoekwerk.<br><em>Wij nemen de beslissing.</em>" data-en="The system does the searching.<br><em>We make the decision.</em>">Het systeem doet het zoekwerk.<br><em>Wij nemen de beslissing.</em></h2>
+      <p class="ai-body" data-nl="Of een oprichter écht gelooft in zijn eigen bedrijf, of een CEO de moed heeft om korte termijn pijn te accepteren voor lange termijn waarde — dat lees je niet af uit een spreadsheet. Dat beoordelen wij zelf." data-en="Whether a founder truly believes in their own company, or a CEO has the courage to accept short-term pain for long-term value — you cannot read that from a spreadsheet. We judge that ourselves.">Of een oprichter écht gelooft in zijn eigen bedrijf, of een CEO de moed heeft om korte termijn pijn te accepteren voor lange termijn waarde — dat lees je niet af uit een spreadsheet. Dat beoordelen wij zelf.</p>
+      <p class="ai-body" data-nl="Maar het voorwerk, het scannen van duizenden bedrijven op financiële data, verslagen, marktsentiment en signalen, dat laten wij over aan onze eigen AI-screeningstool. De grote meerderheid valt daarin al af. Alleen wat overblijft krijgt onze volledige aandacht." data-en="But the groundwork — scanning thousands of companies for financial data, reports, market sentiment and signals — we leave that to our own AI screening tool. The vast majority are eliminated there. Only what remains gets our full attention.">Maar het voorwerk, het scannen van duizenden bedrijven op financiële data, verslagen, marktsentiment en signalen, dat laten wij over aan onze eigen AI-screeningstool. De grote meerderheid valt daarin al af. Alleen wat overblijft krijgt onze volledige aandacht.</p>
+      <div class="ai-callout">
+        <div class="ai-callout-text">&ldquo;Het systeem genereert het signaal. Wij nemen de beslissing.&rdquo;</div>
+      </div>
+    </div>
+    <div class="ai-visual">
+      <div class="ai-vis-title">Screeningsproces</div>
+      <div class="ai-flow">
+        <div class="ai-flow-step"><div class="ai-flow-num">1</div><div><div class="ai-flow-label">Universele scan</div><div class="ai-flow-sub">Duizenden wereldwijde beursgenoteerde aandelen continu gemonitord op financi&euml;n, verslagen en sentiment</div></div></div>
+        <div class="ai-flow-step"><div class="ai-flow-num">2</div><div><div class="ai-flow-label">Criteria-filter</div><div class="ai-flow-sub">Strenge filtering op beleggingscriteria, de grote meerderheid valt af</div></div></div>
+        <div class="ai-flow-step"><div class="ai-flow-num">3</div><div><div class="ai-flow-label">Menselijke analyse</div><div class="ai-flow-sub">Kansrijke kandidaten worden diepgaand kwalitatief en kwantitatief onderzocht</div></div></div>
+        <div class="ai-flow-step"><div class="ai-flow-num">4</div><div><div class="ai-flow-label">Beleggingsbeslissing</div><div class="ai-flow-sub">Hoogovertuigingsposities bepaald op basis van risico/rendementasymmetrie en langetermijnwaardecreatie</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="incentives">
+  <div class="section-eyebrow" style="color:var(--gold);" data-nl="Onze beleggingsprincipes" data-en="Our investment principles">Onze beleggingsprincipes</div>
+  <h2 class="section-title section-title-light" data-nl="Wij beleggen zelf mee.<br><em>Skin in the Game.</em>" data-en="We invest alongside you.<br><em>Skin in the Game.</em>">Wij beleggen zelf mee.<br><em>Skin in the Game.</em></h2>
+  <div class="incentives-inner">
+    <div>
+      <p class="incentives-body" data-nl="Een CEO die zijn eigen vermogen in zijn bedrijf heeft, denkt anders. Langetermijndenken is niet een principe dat je afdwingt met bonusstructuren. Het ontstaat vanzelf als iemand zelf de gevolgen draagt van zijn beslissingen." data-en="A CEO who has their own capital in their business thinks differently. Long-term thinking is not a principle you enforce with bonus structures. It arises naturally when someone bears the consequences of their own decisions.">Een CEO die zijn eigen vermogen in zijn bedrijf heeft, denkt anders. Langetermijndenken is niet een principe dat je afdwingt met bonusstructuren. Het ontstaat vanzelf als iemand zelf de gevolgen draagt van zijn beslissingen.</p>
+      <p class="incentives-body" data-nl="Wij zoeken actief naar oprichter-geleide bedrijven, of naar CEO's die aantoonbaar een significante persoonlijke positie hebben opgebouwd. Insider ownership is voor ons geen bijzaak. Het is een van onze primaire selectiecriteria." data-en="We actively seek founder-led companies, or CEOs who have demonstrably built a significant personal position. Insider ownership is not a side note for us. It is one of our primary selection criteria.">Wij zoeken actief naar oprichter-geleide bedrijven, of naar CEO's die aantoonbaar een significante persoonlijke positie hebben opgebouwd. Insider ownership is voor ons geen bijzaak. Het is een van onze primaire selectiecriteria.</p>
+      <div class="incentives-cards">
+        <div class="inc-card">
+          <div class="inc-card-title" data-nl="Oprichter aan het roer" data-en="Founder at the helm">Oprichter aan het roer</div>
+          <div class="inc-card-body" data-nl="Oprichters presteren structureel beter dan ingehuurd management. Ze hebben iets te bewijzen, iets te beschermen, en iets te verliezen. Die combinatie leidt tot betere beslissingen over kapitaalallocatie en een langetermijnvisie die zelden voorkomt in boardrooms." data-en="Founders consistently outperform hired management. They have something to prove, something to protect, and something to lose. That combination leads to better capital allocation decisions and a long-term vision rarely seen in boardrooms.">Oprichters presteren structureel beter dan ingehuurd management. Ze hebben iets te bewijzen, iets te beschermen, en iets te verliezen. Die combinatie leidt tot betere beslissingen over kapitaalallocatie en een langetermijnvisie die zelden voorkomt in boardrooms.</div>
+        </div>
+        <div class="inc-card">
+          <div class="inc-card-title" data-nl="Significante insider ownership" data-en="Significant insider ownership">Significante insider ownership</div>
+          <div class="inc-card-body" data-nl="Waar geen oprichter meer aanwezig is, zoeken wij CEO's en bestuurders met een aantoonbaar grote persoonlijke positie in het aandeel. Dat alignement maakt de belangen van bestuurder en aandeelhouder één en hetzelfde." data-en="Where no founder is present, we look for CEOs and board members with a demonstrably large personal position in the stock. That alignment makes the interests of manager and shareholder one and the same.">Waar geen oprichter meer aanwezig is, zoeken wij CEO's en bestuurders met een aantoonbaar grote persoonlijke positie in het aandeel. Dat alignement maakt de belangen van bestuurder en aandeelhouder één en hetzelfde.</div>
+        </div>
+        <div class="inc-card">
+          <div class="inc-card-title" data-nl="Skin in the game" data-en="Skin in the game">Skin in the game</div>
+          <div class="inc-card-body" data-nl="De lead portfolio manager belegt een significant deel van zijn persoonlijk vermogen in het fonds. Niet symbolisch — zijn grootste positie is het fonds zelf. Dat aligneert zijn belangen volledig met die van de investeerders." data-en="The lead portfolio manager invests a significant portion of his personal wealth in the fund. Not symbolically — his largest position is the fund itself. This fully aligns his interests with those of investors.">De lead portfolio manager belegt een significant deel van zijn persoonlijk vermogen in het fonds. Niet symbolisch — zijn grootste positie is het fonds zelf. Dat aligneert zijn belangen volledig met die van de investeerders.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="incentives-callout">
+        <div class="incentives-callout-label">Onze beloningsstructuur</div>
+        <div class="incentives-callout-quote">&ldquo;Wij verdienen pas goed als onze investeerders dat ook doen.&rdquo;</div>
+        <p class="incentives-callout-body">Dit is structureel verankerd in onze beloningsstructuur. Wij hanteren een <strong>8% hurdle rate</strong>: pas als het fonds meer dan 8% rendement per jaar behaalt, ontvangen wij een prestatievergoeding. Onder die grens werken wij voor een minimale beheervergoeding.<br><br>Bovendien geldt een <strong>high-water mark</strong>: na een verliesjaar ontvangen wij geen prestatievergoeding totdat eerder geleden verliezen volledig zijn goedgemaakt. Onze belangen zijn volledig gelijkgericht met die van onze investeerders, niet alleen in woorden, maar in euro's.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  PORTFOLIO  ═══════════════════ -->
+<section class="portfolio" id="portfolio">
+  <div class="section-eyebrow">Fondssamenstelling</div>
+  <h2 class="section-title">Bedrijven in het <em>CS Growth Fund</em></h2>
+  <p class="port-intro">Acht namen die de kern van onze beleggingsthesis vertegenwoordigen, elk met een aantoonbaar groeiend omzetprofiel, sterke concurrentiepositie en een schaalbaar bedrijfsmodel.</p>
+
+  <div class="company-grid" id="companyGrid">
+    <!-- Cards rendered by JS -->
+  </div>
+  <p style="font-size:11px;color:var(--muted);line-height:1.7;margin-top:40px;max-width:700px;">Omzetcijfers zijn indicatief op basis van publiek beschikbare jaarverslagen en consensus-schattingen. Rendementen uit het verleden bieden geen garantie voor de toekomst. Dit is geen beleggingsadvies.</p>
+
+  <!-- Allocation -->
+  <div style="margin-top:72px;margin-bottom:80px;">
+    <div class="section-eyebrow">Portefeuillestructuur</div>
+    <h2 class="section-title" style="margin-bottom:40px;">Hoe de portefeuille<br><em>is opgebouwd.</em></h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:32px;">
+      <div style="background:var(--cream);padding:36px 32px;border-top:3px solid var(--gold);">
+        <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Vroege Groei</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--navy);line-height:1;">30–60%</div>
+        <p style="font-size:13px;font-weight:300;line-height:1.75;color:var(--muted);margin-top:12px;">Bedrijven met aantoonbare omzetgroei die de markt nog niet volledig heeft ingeprijsd. Hoge bruto marges, schaalbaar model, duidelijk pad naar winstgevendheid.</p>
+      </div>
+      <div style="background:var(--cream);padding:36px 32px;border-top:3px solid var(--gold);border-left:2px solid rgba(0,0,0,0.04);">
+        <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Gevestigde Groei</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--navy);line-height:1;">30–60%</div>
+        <p style="font-size:13px;font-weight:300;line-height:1.75;color:var(--muted);margin-top:12px;">Bewezen platforms tijdelijk miskend door macro-angst, sectorroulatie of kortetermijnsentiment. Kwaliteit met korting, niet turnarounds.</p>
+      </div>
+      <div style="background:var(--cream);padding:36px 32px;border-top:3px solid rgba(107,107,107,0.3);border-left:2px solid rgba(0,0,0,0.04);">
+        <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Kas</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--navy);line-height:1;">0–20%</div>
+        <p style="font-size:13px;font-weight:300;line-height:1.75;color:var(--muted);margin-top:12px;">Kasposities zijn puur waarderingsgedreven. Als de markt te duur is en er zijn onvoldoende aantrekkelijke kansen, wachten wij liever dan kapitaal te forceren.</p>
+      </div>
+    </div>
+    <div style="background:var(--navy);padding:28px 32px;display:flex;align-items:center;gap:48px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:6px;">Aantal posities</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);">12–15</div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(255,255,255,0.1);"></div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:6px;">Positiegrootte</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);">5–15%</div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(255,255,255,0.1);"></div>
+      <div style="flex:1;min-width:200px;">
+        <p style="font-size:13px;font-weight:300;line-height:1.75;color:rgba(255,255,255,0.45);margin:0;">Een geconcentreerde portefeuille van hoge overtuiging. Elke positie staat op eigen merites en vertegenwoordigt een bewuste keuze, geen diversificatie omwille van diversificatie.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strategy pillars -->
+  <h2 class="section-title" style="margin-top:80px;">Hoe wij <em>beleggen</em></h2>
+  <div class="port-grid">
+    <div class="port-card">
+      <svg class="port-card-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#C9A84C" stroke-width="1.5"/><path d="M12 26 L18 16 L24 21 L30 13" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="port-card-title">Vroege Groei</div>
+      <div class="port-card-body">Bedrijven die structureel groeien in grote markten, met hoge bruto marges en een duidelijk pad naar winstgevendheid. Voorbeelden: telehealth, fintech, SaaS.</div>
+    </div>
+    <div class="port-card">
+      <svg class="port-card-icon" viewBox="0 0 40 40" fill="none"><rect x="4" y="20" width="8" height="16" rx="1" stroke="#C9A84C" stroke-width="1.5"/><rect x="16" y="12" width="8" height="24" rx="1" stroke="#C9A84C" stroke-width="1.5"/><rect x="28" y="6" width="8" height="30" rx="1" stroke="#C9A84C" stroke-width="1.5"/></svg>
+      <div class="port-card-title">Gevestigde Groei</div>
+      <div class="port-card-body">Bewezen platforms met verdedigbare marktposities, tijdelijk miskend door de markt. Voorbeelden: cloud, e-commerce, marketplace-modellen.</div>
+    </div>
+    <div class="port-card">
+      <svg class="port-card-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1.5"/><path d="M20 4 L20 12 M20 28 L20 36 M4 20 L12 20 M28 20 L36 20" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="port-card-title">Geografische Focus</div>
+      <div class="port-card-body">Primaire focus op beursgenoteerde aandelen in de VS (Nasdaq / NYSE), aangevuld met selectieve posities in Europa en opkomende markten waar de groeithesis overtuigend is.</div>
+    </div>
+    <div class="port-card">
+      <svg class="port-card-icon" viewBox="0 0 40 40" fill="none"><path d="M8 32 L8 16 L20 8 L32 16 L32 32 Z" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/><rect x="15" y="22" width="10" height="10" stroke="#C9A84C" stroke-width="1.5"/></svg>
+      <div class="port-card-title">Positiegrootte</div>
+      <div class="port-card-body">Gedifferentieerde positiegroottes op basis van overtuiging en risico. Topposities (5–15% van AUM) zijn gereserveerd voor de hoogste convictie-ideeën met sterk neerwaarts risicobeheer.</div>
+    </div>
+    <div class="port-card">
+      <svg class="port-card-icon" viewBox="0 0 40 40" fill="none"><path d="M6 34 L14 22 L22 28 L34 10" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34" cy="10" r="3" stroke="#C9A84C" stroke-width="1.5"/></svg>
+      <div class="port-card-title">Houdperiode</div>
+      <div class="port-card-body">Een beleggingsthesis heeft gemiddeld 3 jaar nodig om uit te spelen. Idealiter houden wij bedrijven levenslang aan, zolang het management van hoge kwaliteit blijft en het bedrijf blijft innoveren. Een lage portfolio-omloopsnelheid is voor ons geen doel op zich, maar een natuurlijk gevolg van een portefeuille met kwaliteitsbedrijven.</div>
+    </div>
+    <div class="port-card">
+      <svg class="port-card-icon" viewBox="0 0 40 40" fill="none"><path d="M20 6 L24 14 L34 15.5 L27 22.5 L28.5 33 L20 28.5 L11.5 33 L13 22.5 L6 15.5 L16 14 Z" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      <div class="port-card-title">AI-Gedreven Screening</div>
+      <div class="port-card-body">Wij versterken ons fundamenteel onderzoek met AI-tools voor earnings analyse, sentimentmonitoring en alternatieve data. Dit vergroot ons informatiesignaal zonder de kwalitatieve oordeelsvorming te vervangen.</div>
+    </div>
+  </div>
+
+</section>
+
+
+</div>
+
+<div class="tab-panel" id="tab-team">
+<section class="team" id="team">
+  <div class="section-eyebrow" style="color:var(--gold);" data-nl="Het team" data-en="Our team">Het team</div>
+  <h2 class="section-title section-title-light" style="font-size:clamp(52px,7vw,96px);margin-bottom:60px;" data-nl="Maak kennis met<br><em>de oprichters</em>" data-en="Meet<br><em>the founders</em>">Maak kennis met<br><em>de oprichters</em></h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <img src="jelmer_van_der_velde.png" style="width:100px;height:100px;border-radius:50%;object-fit:cover;object-position:center center;border:2px solid rgba(201,168,76,0.5);margin-bottom:20px;flex-shrink:0;display:block;" alt="Jelmer van der Velde">
+      <div class="team-name">Jelmer van der Velde</div><a href="https://www.linkedin.com/in/jelmer-van-der-velde-976763236/" target="_blank" class="team-linkedin">LinkedIn &rarr;</a>
+      <div class="team-role">Groei &amp; Disruptie</div>
+      <p class="team-bio">Lead portfolio manager en de drijvende kracht achter de groeigerichte beleggingsaanpak van het fonds. 5+ jaar trackrecord van 25% jaarlijks rendement met VC-frameworks in publieke markten.</p>
+      <div class="team-bullets">
+        <div class="team-bullet">Studeerde Innovation Sciences aan de Universiteit Utrecht met specialisatie in disruptieve innovatie</div>
+        <div class="team-bullet">3 jaar in het bestuur van BvvK als Senior Investor, aanjager van de marktoutperformance van de publieke portefeuille</div>
+        <div class="team-bullet">Voormalig teamlid Utrecht Incubator, directe toegang tot oprichters en vroegefase innovatie</div>
+        <div class="team-bullet">Verantwoordelijk voor portefeuilleconstructie, due diligence en investeerdersrapportage</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <img src="gijsbert_van_den_brink.png" style="width:100px;height:100px;border-radius:50%;object-fit:cover;object-position:center center;border:2px solid rgba(201,168,76,0.5);margin-bottom:20px;flex-shrink:0;display:block;" alt="Gijsbert van den Brink">
+      <div class="team-name">Gijsbert van den Brink</div><a href="https://www.linkedin.com/in/gijsbert-van-den-brink-07621741/" target="_blank" class="team-linkedin">LinkedIn &rarr;</a>
+      <div class="team-role">Strategie &amp; Economie</div>
+      <p class="team-bio">Brengt een zeldzame combinatie van macro-economische diepgang en senior bestuurservaring bij grote ondernemingen. Als econoom met MBA levert hij de strategische kaders die de langetermijnvisie van het fonds ondersteunen.</p>
+      <div class="team-bullets">
+        <div class="team-bullet">Econoom (MBA) met diepgaande macro-economische kennis over conjunctuurcycli en structurele trends</div>
+        <div class="team-bullet">Bestuurservaring bij meerdere grote ondernemingen, kapitaalallocatie en langetermijnstrategie</div>
+        <div class="team-bullet">PE- en VC-investeerder in innovatieve bedrijven sinds 2001, over meerdere marktcycli</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <img src="kevin_spoor.png" style="width:100px;height:100px;border-radius:50%;object-fit:cover;object-position:center center;border:2px solid rgba(201,168,76,0.5);margin-bottom:20px;flex-shrink:0;display:block;" alt="Kevin Spoor">
+      <div class="team-name">Kevin Spoor</div><a href="https://www.linkedin.com/in/kevin-spoor-91228a153/" target="_blank" class="team-linkedin">LinkedIn &rarr;</a>
+      <div class="team-role">Finance &amp; Vermogensbeheer</div>
+      <p class="team-bio">Verankert de financi&euml;le analyse en het risicobeheer van het fonds. Combineert een rigoureuze kwantitatieve achtergrond met directe institutionele vermogensbeheerervaring bij een van Nederland&rsquo;s toonaangevende private banks.</p>
+      <div class="team-bullets">
+        <div class="team-bullet">MSc Finance met sterke kwantitatieve achtergrond in financi&euml;le modellering en portefeuilleanalyse</div>
+        <div class="team-bullet">Vermogensbeheerder bij ABN AMRO MeesPierson Private Banking, beheerd vermogen van &euro;200M+</div>
+        <div class="team-bullet">Verantwoordelijk voor klantrelaties, risicobeheer en dagelijkse operaties</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--navy);padding:80px 60px;border-top:1px solid rgba(201,168,76,0.15);">
+  <div style="max-width:720px;">
+    <h2 class="section-title section-title-light" style="margin-bottom:28px;font-size:clamp(36px,5vw,68px);" data-nl="&ldquo;Put your money where your mouth is.&rdquo;" data-en="&ldquo;Put your money where your mouth is.&rdquo;">&ldquo;Put your money where your mouth is.&rdquo;</h2>
+    <p style="font-size:15px;font-weight:300;line-height:1.9;color:rgba(255,255,255,0.55);max-width:620px;margin-bottom:0;" data-nl="Net zoals Jelmer graag belegt in bedrijven waar het management een groot deel van het vermogen in het aandeel heeft zitten, belegt hij zelf ook met &euro;100.000, een significant deel van zijn vermogen, in dit fonds. Het is de meest pure manier om zijn belangen op één lijn te zetten met die van de beleggers in het fonds." data-en="Just as Jelmer prefers to invest in companies where management has a significant portion of their wealth in the stock, he himself invests &euro;100,000 — a significant part of his own capital — in this fund. It is the most straightforward way to fully align his interests with those of the fund&rsquo;s investors.">Net zoals Jelmer graag belegt in bedrijven waar het management een groot deel van het vermogen in het aandeel heeft zitten, belegt hij zelf ook met &euro;100.000, een significant deel van zijn vermogen, in dit fonds. Het is de meest pure manier om zijn belangen op één lijn te zetten met die van de beleggers in het fonds.</p>
+  </div>
+</section>
+
+
+</div>
+
+
+
+<div class="tab-panel" id="tab-resultaten">
+<!-- ═══════════════════  TRACK RECORD  ═══════════════════ -->
+<section class="trackrecord" id="trackrecord" style="padding:0;">
+
+  <!-- Header bar -->
+  <div style="padding:60px 60px 48px;border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div class="section-eyebrow" data-nl="Bewezen Prestaties" data-en="Proven Track Record">Bewezen Prestaties</div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+      <h2 class="section-title section-title-light" style="margin:0;" data-nl="Track Record &amp; <em>Resultaten</em>" data-en="Track Record &amp; <em>Results</em>">Track Record &amp; <em>Resultaten</em></h2>
+      <p style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.3);max-width:380px;line-height:1.7;margin:0;">Persoonlijk track record fondsbeheerder via DeGiro (aug 2020 – apr 2026). Time-weighted rendement, institutionele standaard.</p>
+    </div>
+  </div>
+
+  <!-- KPI row -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div style="padding:36px 40px;border-right:1px solid rgba(255,255,255,0.07);">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Geannualiseerd (TWR)</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#C9A84C;line-height:1;">+24,3%</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:8px;">5,7 jaar track record</div>
+    </div>
+    <div style="padding:36px 40px;border-right:1px solid rgba(255,255,255,0.07);">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Money Multiple</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#C9A84C;line-height:1;">3,08×</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:8px;">Samengesteld rendement</div>
+    </div>
+    <div style="padding:36px 40px;border-right:1px solid rgba(255,255,255,0.07);">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Beste jaar</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#C9A84C;line-height:1;">+151%</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:8px;">2024</div>
+    </div>
+    <div style="padding:36px 40px;">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Slechtste jaar</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:rgba(200,90,90,0.9);line-height:1;">−37%</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:8px;">2022</div>
+    </div>
+  </div>
+
+  <!-- Chart + Risk metrics side by side -->
+  <div style="display:grid;grid-template-columns:1fr 340px;">
+
+    <!-- Bar chart -->
+    <div style="padding:48px 40px 40px 60px;border-right:1px solid rgba(255,255,255,0.07);">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#C9A84C;margin-bottom:32px;">Jaarlijks rendement (time-weighted)</div>
+      <div style="position:relative;height:260px;">
+        <canvas id="trBarChart" role="img" aria-label="Jaarlijks rendement 2020-2026">2020: +2,1% / 2021: +37,9% / 2022: -36,5% / 2023: +26,4% / 2024: +151,3% / 2025: +43,9% / 2026 YTD: -15,4%</canvas>
+      </div>
+      <p style="font-size:11px;color:rgba(255,255,255,0.2);line-height:1.7;margin-top:24px;">* 2020 gedeeltelijk jaar (aug–dec). 2026 YTD t/m 18 april 2026. Max drawdown −53,6% (jun–okt 2022), volledig hersteld in 2024.</p>
+    </div>
+
+    <!-- Risk metrics -->
+    <div style="padding:48px 40px;">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#C9A84C;margin-bottom:32px;">Risico &amp; statistieken</div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Sharpe Ratio (rf=3%)</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#fff;margin-top:4px;">0,33</div>
+        </div>
+        <div style="padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Sortino Ratio</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#fff;margin-top:4px;">0,80</div>
+        </div>
+        <div style="padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Calmar Ratio</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#fff;margin-top:4px;">0,45</div>
+        </div>
+        <div style="padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Max Drawdown</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:rgba(200,90,90,0.9);margin-top:4px;">−53,6%</div>
+        </div>
+        <div style="padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Volatiliteit (ann.)</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#fff;margin-top:4px;">65,1%</div>
+        </div>
+        <div style="padding:18px 0;">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Totaal posities (all-time)</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#fff;margin-top:4px;">55</div>
+        </div>
+      </div>
+      <p style="font-size:11px;color:rgba(255,255,255,0.18);line-height:1.65;margin-top:24px;">Hoge volatiliteit weerspiegelt geconcentreerde posities. Het CS Growth Fund hanteert expliciete positielimieten.</p>
+    </div>
+  </div>
+
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+(function() {
+  var labels = ['2020*','2021','2022','2023','2024','2025','2026 YTD'];
+  var data   = [2.1, 37.9, -36.5, 26.4, 151.3, 43.9, -15.4];
+  var colors = data.map(v => v >= 0 ? '#C9A84C' : 'rgba(200,90,90,0.85)');
+  new Chart(document.getElementById('trBarChart'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: colors,
+        borderRadius: 2,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => (ctx.raw >= 0 ? '+' : '') + ctx.raw.toFixed(1) + '%'
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 11, family: 'DM Sans' } }
+        },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: {
+            color: 'rgba(255,255,255,0.35)',
+            font: { size: 11, family: 'DM Sans' },
+            callback: v => v + '%'
+          }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+
+
+
+
+<section class="casestudies" id="casestudies">
+  <div class="section-eyebrow">Beleggingsanalyse</div>
+  <h2 class="section-title">Twee voorbeelden van onze<br><em data-nl="Onze beleggingsthesis in de praktijk.<br><em>Twee cases.</em>" data-en="Our investment thesis in practice.<br><em>Two cases.</em>">beleggingsthesis in de praktijk</em></h2>
+
+  <!-- Side-by-side case studies -->
+  <div class="cs-side-by-side">
+
+    <!-- HIMS -->
+    <div style="background:#fff;padding:52px 44px;border-top:3px solid var(--navy);">
+      <div class="cs-tag">Vroege Groei · Telehealth</div>
+      <div class="cs-name">Hims &amp; Hers Health</div>
+      <div class="cs-ticker">NYSE: HIMS</div>
+      <p class="cs-desc">Hims &amp; Hers is een direct-to-consumer telehealth platform dat gepersonaliseerde gezondheidszorg aanbiedt via abonnementsmodellen. Het bedrijf bedient markten zoals haarverlies, gewichtsbeheersing en mentale gezondheid, categorieën met een structureel groeiend addressable market.</p>
+      <div class="cs-thesis-title" data-nl="Onze beleggingsthesis" data-en="Our investment thesis">Onze beleggingsthesis</div>
+      <div class="cs-bullets">
+        <div class="cs-bullet">Sterk schaalbaar abonnementsmodel met aantoonbaar hoge bruto marges (>75%), indicatief voor een krachtig unit economics profiel naarmate het platform groeit.</div>
+        <div class="cs-bullet">De markt fixeerde zich op kortetermijn EBITDA-verlies, terwijl de onderliggende omzetgroei en klantenretentie aantoonden dat winstgevendheid nabij was.</div>
+        <div class="cs-bullet">HIMS bereikte winstgevendheid in 2024. De GLP-1 weight-loss tailwind versnelde de omzetgroei verder en bevestigde de breedte van het platform.</div>
+        <div class="cs-bullet"><strong style="color:var(--navy);font-weight:500;">Oprichter Andrew Dudum bezit nog altijd een significante aandelenbelang.</strong> Wij hechten grote waarde aan sterke insider ownership, het is een krachtig signaal dat de oprichter zelf gelooft in de lange termijn waardecreatie en zijn belangen volledig aligneert met die van aandeelhouders.</div>
+      </div>
+    </div>
+
+    <!-- AMAZON -->
+    <div style="background:#fff;padding:52px 44px;border-top:3px solid var(--navy);border-left:2px solid rgba(0,0,0,0.04);">
+      <div class="cs-tag">Gevestigde Groei · Cloud / E-Commerce</div>
+      <div class="cs-name">Amazon</div>
+      <div class="cs-ticker">NASDAQ: AMZN</div>
+      <p class="cs-desc">Amazon is een van de meest gediversifieerde technologie-bedrijven ter wereld, met leidende posities in e-commerce, cloud computing (AWS, ~30% marktaandeel) en advertising. Het bedrijf beschikt over structurele concurrentievoordelen die decennialang zijn opgebouwd.</p>
+      <div class="cs-thesis-title" data-nl="Onze beleggingsthesis" data-en="Our investment thesis">Onze beleggingsthesis</div>
+      <div class="cs-bullets">
+        <div class="cs-bullet">Hard afgestraft in 2022 door rentestijgingen en tijdelijk teruglopende AWS-groei. De markt strafte tijdelijke kostenstijgingen af als permanente structuurproblemen.</div>
+        <div class="cs-bullet">De fundamentals op lange termijn bleken intact: AWS bleef dominant, advertising groeide snel en het logistieknetwerk creëert een onnavolgbaar kostenvoordeel.</div>
+        <div class="cs-bullet">Dit illustreert onze aanpak voor gevestigde groei: kwaliteitsondernemingen tijdelijk miskend door macro-angst of sectorroulatie, niet door fundamentele verslechtering.</div>
+        <div class="cs-bullet">Een sterke moat, terugkerende inkomsten via Prime en AWS, en een duidelijk herstelpad maakten dit tot een overtuigend instapmoment voor de lange termijn.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+var trChart = null;
+function initBarChart() {
+  var canvas = document.getElementById('trBarChart');
+  if (!canvas || !window.Chart) return;
+  if (trChart) { trChart.destroy(); trChart = null; }
+  var labels = ['2020*','2021','2022','2023','2024','2025','2026 YTD'];
+  var data   = [2.1, 37.9, -36.5, 26.4, 151.3, 43.9, -15.4];
+  var colors = data.map(function(v){ return v >= 0 ? '#C9A84C' : 'rgba(200,90,90,0.85)'; });
+  trChart = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderRadius: 2, borderSkipped: false }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx){ return (ctx.raw >= 0 ? '+' : '') + ctx.raw.toFixed(1) + '%'; } } } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 11 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 11 }, callback: function(v){ return v + '%'; } } }
+      }
+    }
+  });
+}
+</script>
+</div>
+
+<div class="tab-panel" id="tab-investeren">
+<section class="terms" id="voorwaarden">
+  <div class="terms-inner">
+    <div>
+      <div class="section-eyebrow" data-nl="Fondsvoorwaarden" data-en="Fund terms">Fondsvoorwaarden</div>
+      <h2 class="section-title" data-nl="Geen verrassingen.<br><em>Eerlijke voorwaarden.</em>" data-en="No surprises.<br><em>Fair terms.</em>">Geen verrassingen.<br><em>Eerlijke voorwaarden.</em></h2>
+      <div class="terms-table">
+        <div class="terms-row"><span class="terms-label">Strategie</span><span class="terms-value">Long-only beursgenoteerde aandelen</span></div>
+        <div class="terms-row"><span class="terms-label">Geografie</span><span class="terms-value">Wereldwijd &middot; Focus VS small &amp; mid-cap</span></div>
+        <div class="terms-row"><span class="terms-label">Min. inleg</span><span class="terms-value">&euro;100.000 per investeerder</span></div>
+        <div class="terms-row"><span class="terms-label">Beheervergoeding</span><span class="terms-value">0,95% per jaar</span></div>
+        <div class="terms-row"><span class="terms-label">Prestatievergoeding</span><span class="terms-value">20% boven 8% hurdle &middot; HWM</span></div>
+        <div class="terms-row"><span class="terms-label">Hefboom</span><span class="terms-value">Geen</span></div>
+        <div class="terms-row"><span class="terms-label">Uitstap</span><span class="terms-value">Geen lock-up periode</span></div>
+        <div class="terms-row"><span class="terms-label">Regelgeving</span><span class="terms-value">AIFMD Light &middot; AFM Geregistreerd</span></div>
+        <div class="terms-row"><span class="terms-label">Beheerder</span><span class="terms-value">AssetCare</span></div>
+      </div>
+    </div>
+    <div class="terms-cta">
+      <div class="terms-cta-title" data-nl="Interesse in<br>deelname als<br><em>LP?</em>" data-en="Interested in<br>joining as<br><em>an LP?</em>">Interesse in<br>deelname als<br><em>LP?</em></div>
+      <p class="terms-cta-body">Wij zijn momenteel in gesprek met een selecte groep Limited Partners. Deelname begint met een niet-bindende soft commitment ter ondersteuning van de fondsoprichting voor de geplande lancering in Q4 2026.</p>
+      <a href="Soft_Commitment_CS.pdf" download="Soft_Commitment_CS.pdf" class="btn-primary">Soft commitment indienen</a>
+      <a href="CS_Investment_Philosophy_Fund_Overview.pdf" download="CS_Investment_Philosophy_Fund_Overview.pdf" class="btn-outline">Download overzicht</a>
+    </div>
+  </div>
+</section>
+
+
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Contrarius Sapiens <span>Growth Fund</span></div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.28);margin-top:8px;font-weight:300;">contrariussapiens.nl &middot; Nederland</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#trackrecord">Track Record</a></li>
+      <li><a href="#casestudies">Case Studies</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#voorwaarden">Fondsvoorwaarden</a></li>
+      <li><a href="#investeerders">Investeerders</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-disclaimer">Deze website is uitsluitend bedoeld voor informatiedoeleinden en vormt geen aanbod of uitnodiging tot het kopen van effecten. Het Contrarius Sapiens Growth Fund is geregistreerd onder het AIFMD Light Regime bij de Autoriteit Financi&euml;le Markten (AFM). Distributie is beperkt tot Nederland. Beleggen brengt risico&rsquo;s met zich mee, waaronder mogelijk verlies van inleg.</p>
+    <div class="footer-reg">AIFMD Light Regime<br>AFM Geregistreerd &middot; AssetCare<br><span style="color:rgba(255,255,255,0.2);font-size:10px;">&copy; Contrarius Sapiens Growth Fund</span></div>
+  </div>
+  <div style="border-top:1px solid rgba(255,255,255,0.07);margin-top:32px;padding-top:20px;text-align:center;">
+    <p style="font-size:11px;color:rgba(255,255,255,0.25);line-height:1.7;max-width:600px;margin:0 auto;">Deze website gebruikt uitsluitend functionele cookies die noodzakelijk zijn voor het correct functioneren van de site. Er worden geen tracking- of advertentiecookies geplaatst. Door deze website te gebruiken ga je akkoord met ons gebruik van functionele cookies. <span id="cookiePrivacyToggle" onclick="document.getElementById('cookiePrivacyDetails').style.display=document.getElementById('cookiePrivacyDetails').style.display==='none'?'block':'none'" style="color:rgba(201,168,76,0.6);cursor:pointer;text-decoration:underline;">Meer informatie</span></p>
+    <div id="cookiePrivacyDetails" style="display:none;margin-top:16px;font-size:11px;color:rgba(255,255,255,0.2);line-height:1.8;max-width:600px;margin-left:auto;margin-right:auto;text-align:left;">
+      <strong style="color:rgba(255,255,255,0.35);">Welke cookies gebruiken wij?</strong><br>
+      Sessiecookies voor navigatie en voorkeursinstellingen (taal). Externe bronnen: Google Fonts (lettertypen), Cloudflare CDN (Chart.js grafieken), Clearbit (bedrijfslogo's). Deze diensten kunnen anonieme verzoeken loggen conform hun eigen privacybeleid. Contrarius Sapiens Growth Fund verzamelt zelf geen persoonsgegevens via deze website.<br><br>
+      <strong style="color:rgba(255,255,255,0.35);">Contact</strong><br>
+      Voor vragen over privacy: info@contrariussapiens.nl
+    </div>
+  </div>
+</footer>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  var panel = document.getElementById('tab-' + id);
+  if (panel) { panel.classList.add('active'); window.scrollTo(0,0); }
+  document.querySelectorAll('[data-tab="' + id + '"]').forEach(b => b.classList.add('active'));
+  // rebuild company cards if switching to strategie
+  if (id === 'strategie') { setTimeout(buildCompanyCards, 50); }
+  if (id === 'resultaten') { setTimeout(initBarChart, 100); }
+  // close mobile menu
+  var dd = document.getElementById('navMobileDropdown');
+  var hb = document.getElementById('navHamburger');
+  if (dd) dd.classList.remove('open');
+  if (hb) hb.classList.remove('open');
+}
+
+
+// Case study tab switching
+function showCase(id, btn) {
+  document.querySelectorAll('.cs-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.cs-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('cs-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Company Cards ──────────────────────────────────────────────
+const companies = [
+  {
+    name: 'Amazon',
+    ticker: 'AMZN',
+    type: 'Gevestigde Groei · Cloud / E-commerce',
+    logo: 'https://logo.clearbit.com/amazon.com',
+    // Revenue $B: 2020-2024
+    rev: [386, 470, 514, 575, 638],
+    years: ["'20","'21","'22","'23","'24"],
+    unit: '$B',
+    cagr: '+13%',
+    cagrLabel: 'Omzet CAGR 5j'
+  },
+  {
+    name: 'Hims & Hers',
+    ticker: 'HIMS',
+    type: 'Vroege Groei · Telehealth',
+    logo: 'https://logo.clearbit.com/forhims.com',
+    rev: [0.15, 0.27, 0.53, 0.87, 1.48],
+    years: ["'20","'21","'22","'23","'24"],
+    unit: '$B',
+    cagr: '+77%',
+    cagrLabel: 'Omzet CAGR 5j'
+  },
+  {
+    name: 'SoFi Technologies',
+    ticker: 'SOFI',
+    type: 'Vroege Groei · Fintech',
+    logo: 'https://logo.clearbit.com/sofi.com',
+    rev: [0.56, 0.99, 1.52, 2.10, 2.69],
+    years: ["'20","'21","'22","'23","'24"],
+    unit: '$B',
+    cagr: '+37%',
+    cagrLabel: 'Omzet CAGR 5j'
+  },
+  {
+    name: 'Duolingo',
+    ticker: 'DUOL',
+    type: 'Vroege Groei · EdTech / AI',
+    logo: 'https://logo.clearbit.com/duolingo.com',
+    rev: [0.16, 0.25, 0.37, 0.53, 0.73],
+    years: ["'20","'21","'22","'23","'24"],
+    unit: '$B',
+    cagr: '+35%',
+    cagrLabel: 'Omzet CAGR 5j'
+  },
+  {
+    name: 'Microsoft',
+    ticker: 'MSFT',
+    type: 'Gevestigde Groei · Cloud / AI',
+    logo: 'https://logo.clearbit.com/microsoft.com',
+    rev: [143, 168, 198, 212, 245],
+    years: ["'20","'21","'22","'23","'24"],
+    unit: '$B',
+    cagr: '+11%',
+    cagrLabel: 'Omzet CAGR 5j'
+  },
+  {
+    name: 'Shift4 Payments',
+    ticker: 'FOUR',
+    type: 'Vroege Groei · Payments',
+    logo: 'https://logo.clearbit.com/shift4.com',
+    rev: [1.06, 1.47, 1.92, 2.65, 3.63],
+    years: ["'20","'21","'22","'23","'24"],
+    unit: '$B',
+    cagr: '+28%',
+    cagrLabel: 'Omzet CAGR 5j (volume-based)'
+  },
+  {
+    name: 'Zeta Global',
+    ticker: 'ZETA',
+    type: 'Vroege Groei · MarTech / AI',
+    logo: 'https://logo.clearbit.com/zetaglobal.com',
+    rev: [0.30, 0.38, 0.49, 0.63, 0.88],
+    years: ["'20","'21","'22","'23","'24"],
+    unit: '$B',
+    cagr: '+24%',
+    cagrLabel: 'Omzet CAGR 5j'
+  },
+  {
+    name: 'ServiceNow',
+    ticker: 'NOW',
+    type: 'Gevestigde Groei · Enterprise SaaS',
+    logo: 'https://logo.clearbit.com/servicenow.com',
+    rev: [4.52, 5.90, 7.25, 8.97, 10.98],
+    years: ["'20","'21","'22","'23","'24"],
+    unit: '$B',
+    cagr: '+19%',
+    cagrLabel: 'Omzet CAGR 5j'
+  }
+];
+
+function drawRevenueChart(canvas, data, years) {
+  const W = canvas.clientWidth || 200, H = 72;
+  canvas.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const max = Math.max(...data);
+  const min = 0;
+  const n = data.length;
+  const padL = 2, padR = 2, padT = 4, padB = 18;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const barW = plotW / n * 0.55;
+  const gap = plotW / n;
+
+  let html = '';
+  data.forEach((v, i) => {
+    const x = padL + i * gap + (gap - barW) / 2;
+    const barH = max > 0 ? (v / max) * plotH : 0;
+    const y = padT + plotH - barH;
+    html += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="2" fill="url(#grad${canvas.id})"/>`;
+    html += `<text x="${(x + barW/2).toFixed(1)}" y="${H.toFixed(1)}" text-anchor="middle" font-size="8" fill="rgba(107,107,107,0.7)" font-family="DM Sans">${years[i]}</text>`;
+  });
+
+  const gradId = `grad${canvas.id}`;
+  canvas.innerHTML = `<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E2C87A" stop-opacity="0.5"/></linearGradient></defs>${html}`;
+}
+
+function buildCompanyCards() {
+  const grid = document.getElementById('companyGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  companies.forEach((c, idx) => {
+    const chartId = `cc${idx}`;
+    const card = document.createElement('div');
+    card.className = 'company-card';
+    card.innerHTML = `
+      <div class="cc-logo-wrap">
+        <img src="${c.logo}" alt="${c.name} logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+        <span style="display:none;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--navy);">${c.name}</span>
+      </div>
+      <div class="cc-ticker">${c.ticker} · ${c.name}</div>
+      <div class="cc-type">${c.type}</div>
+      <div class="cc-chart-label">Omzet ${c.unit} — ${c.years[0]}–${c.years[c.years.length-1]}</div>
+      <svg class="cc-chart" id="${chartId}" viewBox="0 0 200 72" preserveAspectRatio="none"></svg>
+      <div class="cc-cagr">${c.cagr}<span>${c.cagrLabel}</span></div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Draw charts after DOM insertion
+  requestAnimationFrame(() => {
+    companies.forEach((c, idx) => {
+      const svg = document.getElementById(`cc${idx}`);
+      if (svg) drawRevenueChart(svg, c.rev, c.years);
+    });
+  });
+}
+
+// Hamburger menu
+(function() {
+  var btn = document.getElementById('navHamburger');
+  var dropdown = document.getElementById('navMobileDropdown');
+  if (!btn || !dropdown) return;
+  btn.addEventListener('click', function() {
+    var open = dropdown.classList.toggle('open');
+    btn.classList.toggle('open', open);
+  });
+  dropdown.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      dropdown.classList.remove('open');
+      btn.classList.remove('open');
+    });
+  });
+})();
+
+// Init first tab
+showTab('overzicht');
+
+// ── Language switcher ─────────────────────────────────────
+let currentLang = 'nl';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('lang-nl').classList.toggle('active', lang === 'nl');
+  document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+  document.querySelectorAll('[data-nl]').forEach(el => {
+    const val = el.getAttribute('data-' + lang);
+    if (!val) return;
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.value = val;
+    } else {
+      el.innerHTML = val;
+    }
+  });
+}
+</script>
+</body>
+</html>
